@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="RepositoryIntherfaces\" />
     <Folder Include="Repository\" />
   </ItemGroup>
 
