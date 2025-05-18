@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DatabaseEngine.RepositoryIntherfaces
+namespace DatabaseEngine.RepositoryInterfaces
 {
-	public interface IUserRoleRepository : IBaseInterface
+	public interface IUserRepository : IBaseInterface
 	{
 
 	}
