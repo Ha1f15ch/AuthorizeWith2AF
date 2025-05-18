@@ -17,8 +17,9 @@ namespace DatabaseEngine.DbModels
 		public string UserEmail { get; set; }
 		public string UserPassword { get; set; }
 		public DateTime CreatedDate { get; set; }
+		public DateTime? DeleteDate { get; set; }
 		public bool IsActive { get; set; }
-		public bool IsApprove { get; set; } // Двухфакторная авторизация выполнена ?
+		public bool IsApprove { get; set; } // Созданный пользователь подтвержден ?
 
 		public RefreshToken RefreshToken { get; set; }
 		public List<UserRole> UserRoles { get; set; }

@@ -36,7 +36,8 @@ namespace DatabaseEngine.Repository
 				var newRole = new Role
 				{
 					RoleCode = roleCode,
-					Description = description
+					Description = description,
+					DeletedDate = null
 				};
 
 				await _context.Roles.AddAsync( newRole );
@@ -60,7 +61,7 @@ namespace DatabaseEngine.Repository
 			{
 				Console.WriteLine($"Роль с кодом {roleCode} найдена, выполняем удаление");
 
-				_context.Roles.Remove(existedRole);
+				existedRole.DeletedDate = DateTime.Now;
 				await _context.SaveChangesAsync();
 				
 				Console.WriteLine($"Роль с кодом {roleCode} успешно удалена");
