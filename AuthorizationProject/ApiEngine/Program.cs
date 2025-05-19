@@ -1,4 +1,6 @@
-﻿using DatabaseEngine;
+﻿using BusinessEngine.Services;
+using BusinessEngine.Services.Interfaces;
+using DatabaseEngine;
 using DatabaseEngine.InitializeData;
 using DatabaseEngine.Repository;
 using DatabaseEngine.RepositoryInterfaces;
@@ -20,6 +22,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 // Остальные контейнеры
+builder.Services.AddSingleton<IGeneratePassword, GeneratePasswordService>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 // Настройки для роутинга

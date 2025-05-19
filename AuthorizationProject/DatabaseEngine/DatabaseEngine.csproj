@@ -19,4 +19,8 @@
     <Folder Include="RepositoryInterfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessEngine\BusinessEngine\BusinessEngine.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.36105.23 d17.13
+VisualStudioVersion = 17.13.36105.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiEngine", "ApiEngine\ApiEngine.csproj", "{B6EFE27E-9D6F-4EFA-A505-681813AEFCA1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseEngine", "DatabaseEngine\DatabaseEngine.csproj", "{14E740DF-218E-4108-A1E4-1AF361EE51A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "CommonData\DTO\DTO.csproj", "{BC7E2260-C01D-4696-B07D-8DAFCA458C59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessEngine", "BusinessEngine\BusinessEngine\BusinessEngine.csproj", "{F9BED34B-0B53-4FD4-A3EE-86ECDFF9D313}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomExceptions", "Exceptions\CustomExceptions\CustomExceptions.csproj", "{C671CAAD-C53B-42E3-B723-7506C39BB103}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{14E740DF-218E-4108-A1E4-1AF361EE51A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14E740DF-218E-4108-A1E4-1AF361EE51A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14E740DF-218E-4108-A1E4-1AF361EE51A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC7E2260-C01D-4696-B07D-8DAFCA458C59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC7E2260-C01D-4696-B07D-8DAFCA458C59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC7E2260-C01D-4696-B07D-8DAFCA458C59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC7E2260-C01D-4696-B07D-8DAFCA458C59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9BED34B-0B53-4FD4-A3EE-86ECDFF9D313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9BED34B-0B53-4FD4-A3EE-86ECDFF9D313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9BED34B-0B53-4FD4-A3EE-86ECDFF9D313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9BED34B-0B53-4FD4-A3EE-86ECDFF9D313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C671CAAD-C53B-42E3-B723-7506C39BB103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C671CAAD-C53B-42E3-B723-7506C39BB103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C671CAAD-C53B-42E3-B723-7506C39BB103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C671CAAD-C53B-42E3-B723-7506C39BB103}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

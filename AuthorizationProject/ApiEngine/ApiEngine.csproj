@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusinessEngine\BusinessEngine\BusinessEngine.csproj" />
     <ProjectReference Include="..\DatabaseEngine\DatabaseEngine.csproj" />
   </ItemGroup>
 

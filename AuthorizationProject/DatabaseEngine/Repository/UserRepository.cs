@@ -1,4 +1,5 @@
-﻿using DatabaseEngine.DbModels;
+﻿using BusinessEngine.Services.Interfaces;
+using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,12 +9,14 @@ namespace DatabaseEngine.Repository
 	public class UserRepository : IUserRepository
 	{
 		private readonly string _secretKeyToPwd;
+		private readonly IGeneratePassword _generatePasswordService;
 		private readonly AppDbContext _context;
 
-		public UserRepository(AppDbContext context, IConfiguration configuration)
+		public UserRepository(AppDbContext context, IConfiguration configuration, IGeneratePassword generatePassword)
 		{
 			_context = context;
 			_secretKeyToPwd = configuration["SecretKeyForUserPwd"];
+			_generatePasswordService = generatePassword;
 		}
 
 		public async Task<bool> ApproveUser(int userId)
@@ -68,7 +71,7 @@ namespace DatabaseEngine.Repository
 				return null;
 			}
 
-			var encodedPassword = GeneratePassword(userPassword);
+			var encodedPassword = _generatePasswordService.GeneratePassword(userPassword);
 
 			if(encodedPassword == null)
 			{
