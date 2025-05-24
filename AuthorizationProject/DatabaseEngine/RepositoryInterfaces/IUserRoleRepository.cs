@@ -1,8 +1,8 @@
-﻿using DatabaseEngine.DbModels;
-
-namespace DatabaseEngine.RepositoryInterfaces
+﻿namespace DatabaseEngine.RepositoryInterfaces
 {
-	public interface IUserRoleRepository : IBaseInterface
+	public interface IUserRoleRepository<TReceive, TResponse> : IBaseInterface<TReceive, TResponse>
+		where TReceive : class
+		where TResponse : class
 	{
 		
 	}

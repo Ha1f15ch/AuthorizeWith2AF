@@ -1,90 +1,68 @@
-﻿using DatabaseEngine.DbModels;
+﻿using AutoMapper;
+using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseEngine.Repository
 {
-	public class RoleRepository : IRoleRepository
+	public class RoleRepository<TReceive, TResponse>
+		: IRoleRepository<TReceive, TResponse>
+		where TReceive : class
+		where TResponse : class
 	{
 		private readonly AppDbContext _context;
-
-		public RoleRepository(AppDbContext context)
+		private readonly IMapper _mapper;
+		
+		public RoleRepository(AppDbContext context, IMapper mapper)
 		{
 			_context = context;
+			_mapper = mapper;
+		}
+		
+		public async Task<TResponse?> GetByCodeAsync(string roleCode)
+		{
+			var role = await _context.Roles.FindAsync(roleCode);
+			return _mapper.Map<TResponse>(role);
 		}
 
-		public async Task<Role?> CreateNewRole(string roleCode, string description)
+		public Task<TResponse> GetByIdAsync(int id)
 		{
-			if(string.IsNullOrEmpty(roleCode)) return null;
+			throw new NotImplementedException("Данный формат данных не поддерживается");
+		}
 
-			if (string.IsNullOrEmpty(description)) return null;
+		public Task<List<TResponse>> GetAllAsync()
+		{
+			throw new NotImplementedException();
+		}
 
-			Console.WriteLine($"Создание новой записи Role");
-			Console.WriteLine($"Поиск существующей роли по коду = {roleCode}");
+		public async Task<TResponse> AddAsync(TReceive entity)
+		{
+			var roleModel = _mapper.Map<Role>(entity);
+			var existedRole = await GetByCodeAsync(roleModel.RoleCode);
 
-			var existedRole = await GetRoleByCode( roleCode );
-
-			if(existedRole is null)
+			if (existedRole == null)
 			{
-				Console.WriteLine($"Выполнить операцию создания роли не получилось, в БД уже есть такая запись, возвращен null");
-				return existedRole;
-			}
-			else
-			{
-				Console.WriteLine($"В БД записи с данным кодом не обнаружено, создаем новую роль");
-
-				var newRole = new Role
-				{
-					RoleCode = roleCode,
-					Description = description,
-					DeletedDate = null
-				};
-
-				await _context.Roles.AddAsync( newRole );
+				await _context.Roles.AddAsync(roleModel);
 				await _context.SaveChangesAsync();
-
-				Console.WriteLine($"Роль с кодом = {roleCode} успешно создана");
-
-				return newRole;
+				return _mapper.Map<TResponse>(roleModel);
 			}
+
+			Console.WriteLine("Передано некорректное значение, запись с таким кодом уже существует");
+			return _mapper.Map<TResponse>(existedRole);
 		}
 
-		public async Task<bool> DeleteRole(string roleCode)
+		public Task<TResponse> UpdateAsync(int id, TReceive entity)
 		{
-			if (string.IsNullOrEmpty(roleCode)) return false;
-
-			Console.WriteLine($"Поиск существующей роли по коду = {roleCode}");
-
-			var existedRole = await GetRoleByCode(roleCode);
-
-			if(existedRole != null)
-			{
-				Console.WriteLine($"Роль с кодом {roleCode} найдена, выполняем удаление");
-
-				existedRole.DeletedDate = DateTime.Now;
-				await _context.SaveChangesAsync();
-				
-				Console.WriteLine($"Роль с кодом {roleCode} успешно удалена");
-
-				return true;
-			}
-			else
-			{
-				Console.WriteLine($"Найти роль с заданным кодом = {roleCode} не удалось, выполнение операции завершено");
-				return false;
-			}
+			throw new NotImplementedException();
 		}
 
-		public async Task<List<Role>> GetAllRoles()
+		public Task<TResponse> DeleteAsync(int id)
 		{
-			Console.WriteLine($"К выводу {_context.Roles.Count()} записей из таблицы Role");
-			return await _context.Roles.ToListAsync();
+			throw new NotImplementedException();
 		}
 
-		public async Task<Role?> GetRoleByCode(string roleCode)
+		public Task<TResponse> GetWithParameters(TReceive parameterizedEntity)
 		{
-			Console.WriteLine($"Поиск роли по коду - {roleCode}");
-			return await _context.Roles.FirstOrDefaultAsync(el => el.RoleCode == roleCode);
+			throw new NotImplementedException();
 		}
 	}
 }

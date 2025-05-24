@@ -1,6 +1,8 @@
 ﻿namespace DatabaseEngine.RepositoryInterfaces
 {
-	public interface IBaseInterface<TReceive, TResponse> where TReceive : class
+	public interface IBaseInterface<TReceive, TResponse> 
+		where TReceive : class 
+		where TResponse : class
 	{
 		Task<TResponse> GetByIdAsync(int id);
 		Task<List<TResponse>> GetAllAsync();

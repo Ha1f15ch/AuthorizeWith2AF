@@ -2,7 +2,9 @@
 
 namespace DatabaseEngine.RepositoryInterfaces
 {
-	public interface IUserRepository : IBaseInterface
+	public interface IUserRepository<TReceive, TResponse> : IBaseInterface<TReceive, TResponse>
+		where TReceive : class
+		where TResponse : class
 	{
 		public Task<User?> CreateNewUser(string userName, string userEmail, string userPassword);
 		public Task<User?> GetUserById(int userId);

@@ -2,7 +2,9 @@
 
 namespace DatabaseEngine.Repository
 {
-	public abstract class BaseRepository<TReceive, TResponse> : IBaseInterface<TReceive, TResponse> where TReceive : class
+	public abstract class BaseRepository<TReceive, TResponse> : IBaseInterface<TReceive, TResponse> 
+		where TReceive : class
+		where TResponse : class
 	{
 		public virtual Task<TResponse> AddAsync(TReceive entity)
 		{

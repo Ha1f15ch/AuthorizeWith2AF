@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DatabaseEngine.RepositoryInterfaces
+﻿namespace DatabaseEngine.RepositoryInterfaces
 {
-	public interface IRefreshTokenRepository : IBaseInterface
+	public interface IRefreshTokenRepository<TReceive, TResponse> : IBaseInterface<TReceive, TResponse>
+		where TReceive : class
+		where TResponse : class
 	{
 
 	}
