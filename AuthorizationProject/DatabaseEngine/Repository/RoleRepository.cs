@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
+using DTO.RoleModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseEngine.Repository
 {
-	public class RoleRepository<TReceive, TResponse>
-		: IRoleRepository<TReceive, TResponse>
-		where TReceive : class
-		where TResponse : class
+	public class RoleRepository
+		: IRoleRepository
 	{
 		private readonly AppDbContext _context;
 		private readonly IMapper _mapper;
@@ -19,50 +18,44 @@ namespace DatabaseEngine.Repository
 			_mapper = mapper;
 		}
 		
-		public async Task<TResponse?> GetByCodeAsync(string roleCode)
+		public async Task<Role?> GetByCodeAsync(string roleCode)
 		{
 			var role = await _context.Roles.FindAsync(roleCode);
-			return _mapper.Map<TResponse>(role);
+			return role;
 		}
 
-		public Task<TResponse> GetByIdAsync(int id)
-		{
-			throw new NotImplementedException("Данный формат данных не поддерживается");
-		}
-
-		public async Task<List<TResponse>> GetAllAsync()
+		public async Task<List<Role>> GetAllAsync()
 		{
 			var roles = await _context.Roles.ToListAsync();
-			return _mapper.Map<List<TResponse>>(roles);
+			return roles;
 		}
 
-		public async Task<TResponse> AddAsync(TReceive entity)
+		public async Task<Role> AddAsync(Role entity)
 		{
-			var roleModel = _mapper.Map<Role>(entity);
-			var existedRole = await GetByCodeAsync(roleModel.RoleCode);
+			var existedRole = await GetByCodeAsync(entity.RoleCode);
 
 			if (existedRole == null)
 			{
-				await _context.Roles.AddAsync(roleModel);
+				await _context.Roles.AddAsync(entity);
 				await _context.SaveChangesAsync();
-				return _mapper.Map<TResponse>(roleModel);
+				return entity;
 			}
 
 			Console.WriteLine("Передано некорректное значение, запись с таким кодом уже существует");
-			return _mapper.Map<TResponse>(existedRole);
+			return existedRole;
 		}
 
-		public Task<TResponse> UpdateAsync(int id, TReceive entity)
+		public Task<Role> UpdateAsync(int id, Role entity)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<TResponse> DeleteAsync(int id)
+		public Task<bool> DeleteAsync(int id)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<TResponse> GetWithParameters(TReceive parameterizedEntity)
+		public Task<List<Role>> GetWithParameters() //параметризированный запрос 
 		{
 			throw new NotImplementedException();
 		}
