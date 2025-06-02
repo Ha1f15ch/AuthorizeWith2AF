@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DatabaseEngine.Repository
 {
@@ -29,9 +30,10 @@ namespace DatabaseEngine.Repository
 			throw new NotImplementedException("Данный формат данных не поддерживается");
 		}
 
-		public Task<List<TResponse>> GetAllAsync()
+		public async Task<List<TResponse>> GetAllAsync()
 		{
-			throw new NotImplementedException();
+			var roles = await _context.Roles.ToListAsync();
+			return _mapper.Map<List<TResponse>>(roles);
 		}
 
 		public async Task<TResponse> AddAsync(TReceive entity)

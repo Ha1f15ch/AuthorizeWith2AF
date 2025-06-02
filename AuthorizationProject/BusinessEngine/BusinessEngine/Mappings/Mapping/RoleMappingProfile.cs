@@ -14,5 +14,10 @@ public class RoleMappingProfile : Profile
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? "Описание не задано"));
         
         CreateMap<Role, ResponseRoleDtoModel>();
+        CreateMap<List<Role>, ListRoles>()
+            .ConvertUsing((roles, _, context) => new ListRoles
+            {
+                Roles = context.Mapper.Map<List<ResponseRoleDtoModel>>(roles)
+            });
     }
 }
