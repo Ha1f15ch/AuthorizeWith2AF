@@ -1,8 +1,7 @@
 ﻿using BusinessEngine.Commands;
-using BusinessEngine.Handlers.BaseHandler;
-using BusinessEngine.Services.Interfaces;
 using DTO.RoleModels;
 using Microsoft.AspNetCore.Mvc;
+using MediatR;
 
 namespace ApiEngine.Controllers
 {
@@ -10,21 +9,30 @@ namespace ApiEngine.Controllers
 	[ApiController]
 	public class MainController : ControllerBase
 	{
-		private readonly ICommandDispatcher _commandDispatcher;
+		private readonly IMediator _mediator;
 
-		public MainController(ICommandDispatcher commandDispatcher)
+		public MainController(IMediator mediator)
 		{
-			_commandDispatcher = commandDispatcher;
+			_mediator = mediator;
 		}
 
 		[HttpPost("/roles/create")]
-		public async Task<IActionResult> CreateRole([FromBody] CreateRoleCommand? command)
+		public async Task<IActionResult> CreateRole([FromBody] CreateRoleDtoModel createRoleDtoModel)
 		{
-			if (command == null)
-				return BadRequest("Invalid request");
+			var commandToCreate = new CreateRoleCommand
+			{
+				RoleCode = createRoleDtoModel.RoleCode,
+				Description = createRoleDtoModel.Description
+			};
+			
+			var result = await _mediator.Send(commandToCreate);
 
-			var result = await _commandDispatcher.SendAsync<CreateRoleCommand, ResponseRoleDtoModel>(command);
-			return Ok(result);
+			if (result != null)
+			{
+				return Ok(result);
+			}
+			
+			return BadRequest("ошибка при создании новой роли");
 		}
 	}
 }

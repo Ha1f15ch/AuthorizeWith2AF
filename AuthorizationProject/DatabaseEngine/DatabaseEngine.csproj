@@ -20,8 +20,4 @@
     <Folder Include="RepositoryInterfaces\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CommonData\DTO\DTO.csproj" />
-  </ItemGroup>
-
 </Project>

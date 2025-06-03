@@ -1,6 +1,4 @@
-﻿using BusinessEngine.Commands;
-using BusinessEngine.Handleres.Role;
-using BusinessEngine.Handlers.BaseHandler;
+﻿using System.Reflection;
 using BusinessEngine.Mappings.Mapping;
 using BusinessEngine.Services;
 using BusinessEngine.Services.Interfaces;
@@ -8,7 +6,6 @@ using DatabaseEngine;
 using DatabaseEngine.InitializeData;
 using DatabaseEngine.Repository;
 using DatabaseEngine.RepositoryInterfaces;
-using DTO.RoleModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -34,13 +31,17 @@ builder.Services.AddAutoMapper(cfg =>
 
 // Сервисы
 builder.Services.AddSingleton<IGeneratePassword, GeneratePasswordService>();
-builder.Services.AddSingleton<ICommandDispatcher, CommandDispatcher>();
 
 // Репозитории
-builder.Services.AddScoped<IRoleRepository<CreateRoleDtoModel, ResponseRoleDtoModel>, RoleRepository<CreateRoleDtoModel, ResponseRoleDtoModel>>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
-// Обработчики
-builder.Services.AddScoped<ICommandHandler<CreateRoleCommand, ResponseRoleDtoModel>, CreateRoleCommandHandler>();
+// Обработчики mediatr
+builder.Services.AddMediatR(cfg =>
+{
+	var assembly = Assembly.GetExecutingAssembly();
+	
+	cfg.RegisterServicesFromAssembly(assembly);
+});
 
 // Настройки для роутинга
 builder.Services.AddControllers();

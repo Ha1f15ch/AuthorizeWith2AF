@@ -4,9 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DatabaseEngine.Repository
 {
-	public class UserRepository<TReceive, TResponse> : IUserRepository<TReceive, TResponse>
-		where TReceive : class
-		where TResponse : class
+	public class UserRepository : IUserRepository
 	{
 		private readonly string _secretKeyToPwd;
 		private readonly AppDbContext _context;
@@ -18,37 +16,7 @@ namespace DatabaseEngine.Repository
 		}
 
 
-		public Task<TResponse> GetByIdAsync(int id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<List<TResponse>> GetAllAsync()
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<TResponse> AddAsync(TReceive entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<TResponse> UpdateAsync(int id, TReceive entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<TResponse> DeleteAsync(int id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<TResponse> GetWithParameters(TReceive parameterizedEntity)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<User?> CreateNewUser(string userName, string userEmail, string userPassword)
+		public Task<User?> CreateNewUser(User user)
 		{
 			throw new NotImplementedException();
 		}
@@ -78,7 +46,7 @@ namespace DatabaseEngine.Repository
 			throw new NotImplementedException();
 		}
 
-		public Task<User?> UpdateUser(int userId, string newUserName, string newUserEmail)
+		public Task<User?> UpdateUser(int userId, User updateUserEntity)
 		{
 			throw new NotImplementedException();
 		}
