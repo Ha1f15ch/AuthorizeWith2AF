@@ -23,11 +23,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(connectionStrings);
 });
 
-// Остальные контейнеры
-builder.Services.AddAutoMapper(cfg =>
-{
-	cfg.AddProfile<RoleMappingProfile>();
-}, typeof(RoleMappingProfile).Assembly); // Для считывания профилей маппинга
+// Маппинги
+builder.Services.AddAutoMapper(typeof(RoleMappingProfile));
 
 // Сервисы
 builder.Services.AddSingleton<IGeneratePassword, GeneratePasswordService>();
@@ -38,9 +35,11 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 // Обработчики mediatr
 builder.Services.AddMediatR(cfg =>
 {
-	var assembly = Assembly.GetExecutingAssembly();
-	
-	cfg.RegisterServicesFromAssembly(assembly);
+	// Сканируем все загруженные сборки на наличие IRequestHandler'ов
+	foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+	{
+		cfg.RegisterServicesFromAssembly(assembly);
+	}
 });
 
 // Настройки для роутинга

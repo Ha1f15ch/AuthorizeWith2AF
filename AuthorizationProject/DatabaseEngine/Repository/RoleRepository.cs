@@ -35,6 +35,8 @@ namespace DatabaseEngine.Repository
 
 			if (existedRole == null)
 			{
+				entity.CreatedDate = DateTime.Now;
+				
 				await _context.Roles.AddAsync(entity);
 				await _context.SaveChangesAsync();
 				return entity;

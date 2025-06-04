@@ -2,6 +2,7 @@ using AutoMapper;
 using BusinessEngine.Commands;
 using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
+using DTO.RoleModels;
 using MediatR;
 
 namespace BusinessEngine.Handleres.RoleHandler;
@@ -19,7 +20,8 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Role?
     
     public async Task<Role?> Handle(CreateRoleCommand command, CancellationToken cancellationToken)
     {
-        var dtoModel = _mapper.Map<Role>(command);
-        return await _roleRepository.AddAsync(dtoModel);
+        var dtoModel = _mapper.Map<CreateRoleDtoModel>(command);
+        var roleModelForCreate = _mapper.Map<Role>(dtoModel);
+        return await _roleRepository.AddAsync(roleModelForCreate);
     }
 }
