@@ -1,11 +1,11 @@
 using AutoMapper;
-using BusinessEngine.Commands;
+using BusinessEngine.Commands.RoleCommand;
 using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
 using DTO.RoleModels;
 using MediatR;
 
-namespace BusinessEngine.Handleres.RoleHandler;
+namespace BusinessEngine.Handlers.RoleHandler;
 
 public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Role?>
 {

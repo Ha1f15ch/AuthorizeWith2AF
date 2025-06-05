@@ -1,4 +1,4 @@
-﻿using BusinessEngine.Commands;
+﻿using BusinessEngine.Commands.RoleCommand;
 using DTO.RoleModels;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
@@ -32,7 +32,39 @@ namespace ApiEngine.Controllers
 				return Ok(result);
 			}
 			
-			return BadRequest("ошибка при создании новой роли");
+			return BadRequest("Ошибка при создании новой роли");
+		}
+
+		[HttpGet("/roles/get-all")]
+		public async Task<IActionResult> GetAllRoles()
+		{
+			var commandGetAllRoles = new GetAllRolesCommand { };
+			
+			var result = await _mediator.Send(commandGetAllRoles);
+
+			return result.ToArray().Length > 0 ? Ok(result) : Ok("Нет результатов");
+		}
+
+		[HttpDelete("/roles/{roleCode}/delete")]
+		public async Task<IActionResult> DeleteRole(string roleCode)
+		{
+			var commandToDeleteRole = new DeleteRoleByCodeCommand {RoleCode = roleCode};
+			
+			var result = await _mediator.Send(commandToDeleteRole);
+
+			return Ok(result ? "Успешно удалено" : "Удаление не выполнено успешно");
+		}
+
+		[HttpPut("roles/{roleCode}/update")]
+		public async Task<IActionResult> UpdateRole(string roleCode, [FromBody] RoleForUpdateDtoModel roleForUpdate)
+		{
+			var commandToUpdateRole = new UpdateRoleCommand {RoleCode = roleCode, roleForUpdateDtoModel = roleForUpdate};
+			
+			var result = await _mediator.Send(commandToUpdateRole);
+			
+			if (result != null) return Ok(result);
+			
+			return BadRequest("При обновлении возникла ошибка");
 		}
 	}
 }

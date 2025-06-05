@@ -1,5 +1,5 @@
 using AutoMapper;
-using BusinessEngine.Commands;
+using BusinessEngine.Commands.RoleCommand;
 using DatabaseEngine.DbModels;
 using DTO.RoleModels;
 
@@ -12,5 +12,6 @@ public class RoleMappingProfile : Profile
         CreateMap<CreateRoleCommand, CreateRoleDtoModel>();
         CreateMap<CreateRoleDtoModel, Role>()
             .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description ?? "Описание не задано"));
+        CreateMap<RoleForUpdateDtoModel, Role>();
     }
 }

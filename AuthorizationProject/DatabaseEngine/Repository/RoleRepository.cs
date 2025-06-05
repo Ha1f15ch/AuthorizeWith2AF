@@ -88,7 +88,7 @@ namespace DatabaseEngine.Repository
 
 			if (roleForDelete != null)
 			{
-				_context.Roles.RemoveRange(roleForDelete);
+				roleForDelete.DeletedDate = DateTime.Now;
 				await _context.SaveChangesAsync();
 
 				Console.WriteLine($"Успешно удалено");
