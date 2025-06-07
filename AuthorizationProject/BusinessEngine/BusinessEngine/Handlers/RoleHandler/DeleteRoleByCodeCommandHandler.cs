@@ -18,7 +18,7 @@ public class DeleteRoleByCodeCommandHandler : IRequestHandler<DeleteRoleByCodeCo
 
     public async Task<bool> Handle(DeleteRoleByCodeCommand request, CancellationToken cancellationToken)
     {
-        var resultForDelete = await _roleRepository.DeleteAsync(request.RoleCode);
+        var resultForDelete = await _roleRepository.DeleteAsync(request.RoleId);
         return resultForDelete;
     }
 }

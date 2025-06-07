@@ -6,6 +6,6 @@ namespace BusinessEngine.Commands.RoleCommand;
 
 public class UpdateRoleCommand : IRequest<Role?>
 {
-    public string RoleCode { get; set; }
+    public int RoleId { get; set; }
     public RoleForUpdateDtoModel roleForUpdateDtoModel { get; set; }
 }

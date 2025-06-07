@@ -45,20 +45,20 @@ namespace ApiEngine.Controllers
 			return result.ToArray().Length > 0 ? Ok(result) : Ok("Нет результатов");
 		}
 
-		[HttpDelete("/roles/{roleCode}/delete")]
-		public async Task<IActionResult> DeleteRole(string roleCode)
+		[HttpDelete("/roles/{roleId}/delete")]
+		public async Task<IActionResult> DeleteRole(int roleId)
 		{
-			var commandToDeleteRole = new DeleteRoleByCodeCommand {RoleCode = roleCode};
+			var commandToDeleteRole = new DeleteRoleByCodeCommand {RoleId = roleId};
 			
 			var result = await _mediator.Send(commandToDeleteRole);
 
 			return Ok(result ? "Успешно удалено" : "Удаление не выполнено успешно");
 		}
 
-		[HttpPut("roles/{roleCode}/update")]
-		public async Task<IActionResult> UpdateRole(string roleCode, [FromBody] RoleForUpdateDtoModel roleForUpdate)
+		[HttpPut("roles/{roleId}/update")]
+		public async Task<IActionResult> UpdateRole(int roleId, [FromBody] RoleForUpdateDtoModel roleForUpdate)
 		{
-			var commandToUpdateRole = new UpdateRoleCommand {RoleCode = roleCode, roleForUpdateDtoModel = roleForUpdate};
+			var commandToUpdateRole = new UpdateRoleCommand {RoleId = roleId, roleForUpdateDtoModel = roleForUpdate};
 			
 			var result = await _mediator.Send(commandToUpdateRole);
 			

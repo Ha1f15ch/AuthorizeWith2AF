@@ -17,12 +17,19 @@ namespace DatabaseEngine.Repository
 			_mapper = mapper;
 		}
 		
-		public async Task<Role?> GetByCodeAsync(string roleCode)
+		public async Task<Role?> GetByRoleIdAsync(int roleId)
 		{
-			var role = await _context.Roles.FindAsync(roleCode);
+			var role = await _context.Roles.FindAsync(roleId);
 			return role;
 		}
 
+		public async Task<Role?> GetByCodeAsync(string roleCode)
+		{
+			var role = await _context.Roles.FirstOrDefaultAsync(val => val.RoleCode == roleCode);
+			
+			return role ?? role;
+		}
+		
 		public async Task<List<Role>> GetAllAsync()
 		{
 			var roles = await _context.Roles.ToListAsync();
@@ -46,13 +53,13 @@ namespace DatabaseEngine.Repository
 			return existedRole;
 		}
 
-		public async Task<Role?> UpdateAsync(string code, Role entity)
+		public async Task<Role?> UpdateAsync(int roleId, Role entity)
 		{
-			var roleForUpdate = await _context.Roles.FindAsync(code);
+			var roleForUpdate = await _context.Roles.FindAsync(roleId); // По id
 
 			if (roleForUpdate != null)
 			{
-				var existedRoleByRoleCode = await GetByCodeAsync(entity.RoleCode);
+				var existedRoleByRoleCode = await GetByCodeAsync(entity.RoleCode); // Прооверяем введенные данные п окоду
 				// Случай, если меняется все, кроме RoleCode
 				if ((existedRoleByRoleCode != null) && (existedRoleByRoleCode.RoleCode == roleForUpdate.RoleCode))
 				{
@@ -78,13 +85,13 @@ namespace DatabaseEngine.Repository
 				return existedRoleByRoleCode;
 			}
 
-			Console.WriteLine($"При выполнении операции обновления возникла ошибка. Роль по id = {code} не была найдена");
+			Console.WriteLine($"При выполнении операции обновления возникла ошибка. Роль по id = {roleId} не была найдена");
 			return null;
 		}
 
-		public async Task<bool> DeleteAsync(string code)
+		public async Task<bool> DeleteAsync(int roleId)
 		{
-			var roleForDelete = await _context.Roles.FindAsync(code);
+			var roleForDelete = await GetByRoleIdAsync(roleId);
 
 			if (roleForDelete != null)
 			{
@@ -95,7 +102,7 @@ namespace DatabaseEngine.Repository
 				return true;
 			}
 			
-			Console.WriteLine($"Удалить не полуилось, не найдена роль по коду - {code}");
+			Console.WriteLine($"Удалить не полуилось, не найдена роль по id - {roleId}");
 			return false;
 		}
 

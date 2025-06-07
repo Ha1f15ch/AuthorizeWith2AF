@@ -21,7 +21,7 @@ public class UpdateRoleCommandHandler : IRequestHandler<UpdateRoleCommand, Role?
     {
         var role = _mapper.Map<Role>(request.roleForUpdateDtoModel);
         
-        var getResultUpdate = await _roleRepository.UpdateAsync(request.RoleCode, role);
+        var getResultUpdate = await _roleRepository.UpdateAsync(request.RoleId, role);
         return getResultUpdate;
     }
 }
