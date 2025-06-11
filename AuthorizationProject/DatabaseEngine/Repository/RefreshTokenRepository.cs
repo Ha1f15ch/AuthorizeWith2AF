@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
 using Microsoft.EntityFrameworkCore;
@@ -37,9 +38,45 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         return await _context.RefreshTokens.SingleOrDefaultAsync(el => el.UserId == userId);
     }
 
-    public Task<RefreshToken> GenerateRefreshToken(int userId)
+    public async Task<RefreshToken?> GenerateRefreshToken(int userId)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user == null)
+        {
+            Console.WriteLine($"Пользователя с переданным id пользователя не найдено");
+            return null;
+        }
+        
+        var existedToken = await GetrefreshTokenByUserId(userId);
+
+        if (existedToken != null)
+        {
+            Console.WriteLine($"токен для данного пользователя уже формировался");
+            var isValid = await CheckValidationToken(existedToken.Id);
+
+            if (isValid)
+            {
+                return existedToken;
+            }
+            
+            await RemoveRefreshTokenById(existedToken.Id); 
+            return null;   
+        }
+        
+        // Создаем модель для записи в БД 
+        var newToken = new RefreshToken
+        {
+            UserId = userId,
+            UniqueRefreshToken = GenerateRefreshToken(),
+            DateCreated = DateTime.Now,
+            DateExpired = DateTime.Now.AddDays(14)
+        };
+        
+        await _context.RefreshTokens.AddAsync(newToken);
+        await _context.SaveChangesAsync();
+        
+        return newToken;
     }
 
     public async Task<bool> RemoveRefreshTokenById(int id)
@@ -73,5 +110,13 @@ public class RefreshTokenRepository : IRefreshTokenRepository
         var isValid = token.DateExpired < DateTime.Now;
         
         return isValid;
+    }
+
+    private static string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }
