@@ -1,5 +1,7 @@
 ﻿using BusinessEngine.Commands.RoleCommand;
+using BusinessEngine.Commands.UserCommand;
 using DTO.RoleModels;
+using DTO.UserModels;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
 
@@ -55,7 +57,7 @@ namespace ApiEngine.Controllers
 			return Ok(result ? "Успешно удалено" : "Удаление не выполнено успешно");
 		}
 
-		[HttpPut("roles/{roleId}/update")]
+		[HttpPut("/roles/{roleId}/update")]
 		public async Task<IActionResult> UpdateRole(int roleId, [FromBody] RoleForUpdateDtoModel roleForUpdate)
 		{
 			var commandToUpdateRole = new UpdateRoleCommand {RoleId = roleId, roleForUpdateDtoModel = roleForUpdate};
@@ -65,6 +67,21 @@ namespace ApiEngine.Controllers
 			if (result != null) return Ok(result);
 			
 			return BadRequest("При обновлении возникла ошибка");
+		}
+
+		[HttpPost("/sign-up")]
+		public async Task<IActionResult> Registration([FromBody] UserRegistrationDtoModel userRegistrationDtoModel)
+		{
+			var commandToRegistration = new UserRegistrationCommand
+			{
+				UserName = userRegistrationDtoModel.UserName,
+				UserEmail = userRegistrationDtoModel.UserEmail,
+				Password = userRegistrationDtoModel.Password
+			};
+			
+			var resultRegistration = await _mediator.Send(commandToRegistration);
+			
+			return Ok("Вы зарегистрированы !!!");
 		}
 	}
 }
