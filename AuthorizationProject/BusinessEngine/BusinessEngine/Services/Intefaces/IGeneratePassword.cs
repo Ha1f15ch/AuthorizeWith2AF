@@ -2,6 +2,6 @@
 {
 	public interface IGeneratePassword
 	{
-		string GeneratePassword(string password);
+		public string? GeneratePassword();
 	}
 }

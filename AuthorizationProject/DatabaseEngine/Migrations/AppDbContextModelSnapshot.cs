@@ -30,6 +30,9 @@ namespace DatabaseEngine.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("DateExpired")
                         .HasColumnType("datetime2");
 
@@ -103,7 +106,6 @@ namespace DatabaseEngine.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserPassword")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -132,6 +134,43 @@ namespace DatabaseEngine.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRole", "dbo");
+                });
+
+            modelBuilder.Entity("DatabaseEngine.DbModels.VerificationCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpirationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("VerificationCode", "dbo");
                 });
 
             modelBuilder.Entity("DatabaseEngine.DbModels.RefreshToken", b =>
@@ -164,6 +203,17 @@ namespace DatabaseEngine.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DatabaseEngine.DbModels.VerificationCode", b =>
+                {
+                    b.HasOne("DatabaseEngine.DbModels.User", "User")
+                        .WithMany("VerificationCodes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DatabaseEngine.DbModels.Role", b =>
                 {
                     b.Navigation("UserRoles");
@@ -175,6 +225,8 @@ namespace DatabaseEngine.Migrations
                         .IsRequired();
 
                     b.Navigation("UserRoles");
+
+                    b.Navigation("VerificationCodes");
                 });
 #pragma warning restore 612, 618
         }

@@ -23,14 +23,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 	options.UseSqlServer(connectionStrings);
 });
 
-// Маппинги
+// Маппинг моделей
 builder.Services.AddAutoMapper(typeof(RoleMappingProfile));
+builder.Services.AddAutoMapper(typeof(UserMappingProfile));
 
 // Сервисы
+builder.Services.AddSingleton<IPasswordService, PasswordService>();
 builder.Services.AddSingleton<IGeneratePassword, GeneratePasswordService>();
 
 // Репозитории
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
 // Обработчики mediatr
 builder.Services.AddMediatR(cfg =>

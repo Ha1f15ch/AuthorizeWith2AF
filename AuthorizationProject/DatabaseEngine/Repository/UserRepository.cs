@@ -1,5 +1,6 @@
 ﻿using DatabaseEngine.DbModels;
 using DatabaseEngine.RepositoryInterfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace DatabaseEngine.Repository
@@ -16,9 +17,41 @@ namespace DatabaseEngine.Repository
 		}
 
 
-		public Task<User?> CreateNewUser(User user)
+		public async Task<User?> CreateNewUser(User user)
 		{
-			throw new NotImplementedException();
+			var existedUserName = await _context.Users.AnyAsync(el => el.UserName == user.UserName);
+			
+			if (existedUserName)
+			{
+				Console.WriteLine($"Пользователь с таким UserName уже есть");
+				return null;
+			}
+			
+			var existedUserEmail = await _context.Users.AnyAsync(el => el.UserEmail == user.UserEmail);
+
+			if (existedUserEmail)
+			{
+				Console.WriteLine($"Пользователь с таким UserEmail уже есть");
+				return null;
+			}
+
+			Console.WriteLine($"Создаем пользователя");
+			var newUser = new User
+			{
+				UserName = user.UserName,
+				UserEmail = user.UserEmail,
+				UserPassword = user.UserPassword,
+				CreatedDate = DateTime.Now,
+				DeleteDate = null,
+				IsActive = true,
+				IsApprove = false,
+			};
+			
+			await _context.Users.AddAsync(newUser);
+			await _context.SaveChangesAsync();
+			Console.WriteLine($"Пользователь успешно зарегистрирован. {newUser.UserName} - {newUser.Id}");
+			
+			return newUser;
 		}
 
 		public Task<User?> GetUserById(int userId)

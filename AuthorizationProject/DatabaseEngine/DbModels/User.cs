@@ -15,7 +15,7 @@ namespace DatabaseEngine.DbModels
 		public int Id { get; set; }
 		public required string UserName { get; set; }
 		public required string UserEmail { get; set; }
-		public required string UserPassword { get; set; }
+		public required string? UserPassword { get; set; }
 		public DateTime CreatedDate { get; set; }
 		public DateTime? DeleteDate { get; set; }
 		public bool IsActive { get; set; }
@@ -23,5 +23,6 @@ namespace DatabaseEngine.DbModels
 
 		public RefreshToken RefreshToken { get; set; }
 		public List<UserRole> UserRoles { get; set; }
+		public List<VerificationCode> VerificationCodes { get; set; }
 	}
 }
